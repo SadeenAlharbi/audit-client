@@ -41,10 +41,16 @@ The package contains **no platform logic** and never touches the platform databa
 
 ## Installation
 
-The package is distributed through the company's private Composer repository (see [docs/publishing.md](docs/publishing.md) for how to add it to your project).
+The package lives in the private repository [SadeenAlharbi/audit-client](https://github.com/SadeenAlharbi/audit-client). Until it is added to a private Composer repository (see [docs/publishing.md](docs/publishing.md)), point Composer at it directly; your machine or CI needs read access to the repository (SSH key or a GitHub token):
+
+```json
+"repositories": [
+    { "type": "vcs", "url": "git@github.com:SadeenAlharbi/audit-client.git" }
+]
+```
 
 ```bash
-composer require company/audit-client
+composer require company/audit-client:^1.0
 php artisan vendor:publish --tag=audit-config        # config/audit-client.php
 ```
 
