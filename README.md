@@ -13,7 +13,7 @@ The package contains **no platform logic** and never touches the platform databa
 | | |
 |---|---|
 | PHP | 8.2, 8.3, 8.4 |
-| Laravel | 11, 12, 13 (13 requires PHP ≥ 8.3) |
+| Laravel | 12, 13 (13 requires PHP ≥ 8.3) |
 | API | Audit Log Hub API v1 |
 
 ---
@@ -328,4 +328,4 @@ composer lint        # Pint (laravel preset)
 composer analyse     # PHPStan level 6 + Larastan
 ```
 
-CI runs all three on PHP 8.2–8.4 × Laravel 11–13 (`.github/workflows/tests.yml`). Releasing is described in [docs/publishing.md](docs/publishing.md).
+CI runs all three on PHP 8.2–8.4 × Laravel 12–13 (`.github/workflows/tests.yml`). Releasing is described in [docs/publishing.md](docs/publishing.md).

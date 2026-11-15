@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-15
+
+### Removed
+
+- Laravel 11 support. Every Laravel 11 release is now affected by unpatched security
+  advisories (Laravel 11 is out of security support), so Composer refuses to install it.
+  Supported: Laravel 12 and 13 on PHP 8.2-8.4 (Laravel 13 requires PHP 8.3+).
+
 ## [1.0.0] - 2026-11-11
 
 ### Added
