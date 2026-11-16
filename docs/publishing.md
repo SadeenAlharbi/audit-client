@@ -2,6 +2,8 @@
 
 The package is internal (proprietary license), so it is **not** published on packagist.org. It is served from a private Composer repository. Three options are described below; pick one per organisation and use it consistently.
 
+**Current setup:** the package lives in the private GitHub repository [SadeenAlharbi/audit-client](https://github.com/SadeenAlharbi/audit-client), released with SemVer tags and GitHub Releases, and consuming projects use it as a `vcs` repository (option B below), with read access granted through GitHub. Satis or another private Composer repository can be added later without any change to the package.
+
 All options rely on git tags: Composer reads the version from the tag (`v1.0.0` → `1.0.0`), so `composer.json` has no `version` field.
 
 ## Releasing a version
@@ -34,7 +36,7 @@ An example configuration is in [`docs/satis.json`](satis.json):
     "name": "company/packages",
     "homepage": "https://packages.company.internal",
     "repositories": [
-        { "type": "vcs", "url": "git@github.com:company/audit-client.git" }
+        { "type": "vcs", "url": "git@github.com:SadeenAlharbi/audit-client.git" }
     ],
     "require": {
         "company/audit-client": "^1.0"
@@ -86,14 +88,14 @@ GitHub Packages has no Composer registry. With GitHub, use the repository itself
 **Consuming projects:**
 
 ```bash
-composer config repositories.audit-client vcs https://github.com/company/audit-client
+composer config repositories.audit-client vcs https://github.com/SadeenAlharbi/audit-client
 composer config --global github-oauth.github.com <token-with-repo-read>   # or COMPOSER_AUTH in CI
 composer require company/audit-client:^1.0
 ```
 
 ```json
 "repositories": {
-    "audit-client": { "type": "vcs", "url": "https://github.com/company/audit-client" }
+    "audit-client": { "type": "vcs", "url": "https://github.com/SadeenAlharbi/audit-client" }
 }
 ```
 

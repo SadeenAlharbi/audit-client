@@ -2,7 +2,7 @@
     "name": "company/packages",
     "homepage": "https://packages.company.internal",
     "repositories": [
-        { "type": "vcs", "url": "git@github.com:company/audit-client.git" }
+        { "type": "vcs", "url": "git@github.com:SadeenAlharbi/audit-client.git" }
     ],
     "require": {
         "company/audit-client": "^1.0"
