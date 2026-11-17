@@ -39,7 +39,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   advisories (Laravel 11 is out of security support), so Composer refuses to install it.
   Supported: Laravel 12 and 13 on PHP 8.2-8.4 (Laravel 13 requires PHP 8.3+).
 
+## [1.0.1] - 2026-11-15
+
+### Changed
+
+- README: install from the private GitHub repository (documentation only).
+
 ## [1.0.0] - 2026-11-11
+
+> The `v1.0.0` tag is no longer published (it was withdrawn and cannot be reused);
+> 1.0.1 has the same code. Require `^1.0` as before.
 
 ### Added
 
@@ -68,5 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Publishable config `config/audit-client.php` (tag `audit-config`).
 - Support for PHP 8.2–8.4 and Laravel 11, 12 and 13.
 
-[Unreleased]: https://github.com/company/audit-client/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/company/audit-client/releases/tag/v1.0.0
+[Unreleased]: https://github.com/SadeenAlharbi/audit-client/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/SadeenAlharbi/audit-client/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/SadeenAlharbi/audit-client/compare/v1.0.1...v1.1.0
+[1.0.1]: https://github.com/SadeenAlharbi/audit-client/releases/tag/v1.0.1
