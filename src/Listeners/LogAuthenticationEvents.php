@@ -60,9 +60,6 @@ final class LogAuthenticationEvents
     }
 
     /**
-     * @return array<class-string, string>
-     */
-    /**
      * The identifier the user typed (email, username, ...), if it looks like one.
      *
      * @param  array<array-key, mixed>  $credentials
@@ -79,6 +76,9 @@ final class LogAuthenticationEvents
         return null;
     }
 
+    /**
+     * @return array<class-string, string>
+     */
     public function subscribe(): array
     {
         return [

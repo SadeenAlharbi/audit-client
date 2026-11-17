@@ -119,6 +119,6 @@ final class Masker
 
         $parts = preg_split('/[^A-Za-z0-9]+/', strtolower($spaced), -1, PREG_SPLIT_NO_EMPTY);
 
-        return $parts === false ? [] : array_values($parts);
+        return $parts === false ? [] : $parts;
     }
 }
