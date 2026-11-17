@@ -4,7 +4,7 @@ The package is internal (proprietary license), so it is **not** published on pac
 
 **Current setup:** the package lives in the private GitHub repository [SadeenAlharbi/audit-client](https://github.com/SadeenAlharbi/audit-client), released with SemVer tags and GitHub Releases, and consuming projects use it as a `vcs` repository (option B below), with read access granted through GitHub. Satis or another private Composer repository can be added later without any change to the package.
 
-All options rely on git tags: Composer reads the version from the tag (`v1.0.0` → `1.0.0`), so `composer.json` has no `version` field.
+All options rely on git tags: Composer reads the version from the tag (`v1.2.0` → `1.2.0`), so `composer.json` has no `version` field.
 
 ## Releasing a version
 
@@ -119,7 +119,7 @@ GitLab has a built-in Composer registry per group.
 
 ```bash
 curl --fail-with-body --header "Job-Token: $CI_JOB_TOKEN" \
-     --data tag=v1.0.0 \
+     --data tag=v1.2.0 \
      "https://gitlab.company.internal/api/v4/projects/$CI_PROJECT_ID/packages/composer"
 ```
 
