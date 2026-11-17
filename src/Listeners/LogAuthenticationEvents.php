@@ -52,13 +52,33 @@ final class LogAuthenticationEvents
             ->severity(Severity::Warning)
             ->by($event->user)
             ->on($event->user)
-            ->metadata(['guard' => $event->guard, 'credentials' => $event->credentials])
+            // Only who tried (the login identifier), never the credentials:
+            // a password typed into the e-mail field would otherwise be kept
+            // in an append-only audit log.
+            ->metadata(array_filter(['guard' => $event->guard, 'login' => self::loginIdentifier($event->credentials)]))
             ->send();
     }
 
     /**
      * @return array<class-string, string>
      */
+    /**
+     * The identifier the user typed (email, username, ...), if it looks like one.
+     *
+     * @param  array<array-key, mixed>  $credentials
+     */
+    private static function loginIdentifier(array $credentials): ?string
+    {
+        foreach (['email', 'username', 'login', 'name', 'phone', 'mobile'] as $key) {
+            $value = $credentials[$key] ?? null;
+            if (is_string($value) && $value !== '' && mb_strlen($value) <= 191) {
+                return $value;
+            }
+        }
+
+        return null;
+    }
+
     public function subscribe(): array
     {
         return [

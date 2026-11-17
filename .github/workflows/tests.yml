@@ -23,8 +23,10 @@ jobs:
       fail-fast: false
       matrix:
         php: ['8.2', '8.3', '8.4']
-        laravel: ['12', '13']
+        laravel: ['11', '12', '13']
         include:
+          - laravel: '11'
+            testbench: '^9.0'
           - laravel: '12'
             testbench: '^10.0'
           - laravel: '13'
@@ -46,6 +48,10 @@ jobs:
 
       - name: Install dependencies
         run: |
+          # Laravel 11 has unpatched security advisories, so Composer blocks it by
+          # default. The plan (§5) still requires the package to install in Laravel 11
+          # projects; the host project decides whether to run Laravel 11.
+          if [ "${{ matrix.laravel }}" = "11" ]; then composer config audit.block-insecure false; fi
           composer require "laravel/framework:^${{ matrix.laravel }}.0" "orchestra/testbench:${{ matrix.testbench }}" --dev --no-update --no-interaction
           composer update --prefer-dist --no-interaction --no-progress --with-all-dependencies
 

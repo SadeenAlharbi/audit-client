@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-17
+
+### Added
+
+- Laravel 11 support again (plan §5: Laravel 11 / 12 / 13 on PHP 8.2+). Laravel 11 has
+  unpatched security advisories, so Composer blocks it by default; the CI disables that block
+  for the Laravel 11 jobs only, and the host project decides whether to run Laravel 11.
+
+### Changed
+
+- Masking matches keys by their words, exactly like the platform: `password` also masks
+  `user_password`, `newPassword`, `password2`, `DBPassword`; `token` masks `remember_token`
+  and `APIToken`. Values that are credentials (Bearer/Basic headers, JWTs, Audit Log Hub API
+  keys) are masked whatever their key.
+- The default mask list is the platform's "never store" list (adds `passwd`, `pwd`,
+  `passphrase`, `apikey`, `credential(s)`, `cookie`, `jwt`, `private_key`, `otp`, `pin`,
+  `cardnumber`, `credit_card`, `pan`, `cvc`).
+
+### Security
+
+- `auth.failed` no longer sends the submitted credentials. Its metadata is `guard` and `login`
+  (the email / username typed), so a password typed into the wrong field never ends up in an
+  append-only audit log.
+
 ## [1.1.0] - 2026-11-15
 
 ### Removed

@@ -84,20 +84,19 @@ return [
     |--------------------------------------------------------------------------
     | Values of these keys inside old_values, new_values and metadata are
     | replaced before the log leaves the application (and before it is
-    | written to the queue or the outbox). Matching is case-insensitive and
-    | recursive. The platform applies its own masking as well.
+    | written to the queue or the outbox), at any depth. A key matches by
+    | its words, whatever the case or separator: "password" also masks
+    | "user_password", "newPassword" and "password_confirmation"; "token"
+    | masks "access_token" and "remember_token". Values that look like
+    | credentials (Bearer headers, JWTs, API keys) are masked whatever the
+    | key. The default list is the platform's "never store" list.
     */
     'mask' => [
-        'password',
-        'password_confirmation',
-        'token',
-        'access_token',
-        'refresh_token',
-        'secret',
-        'api_key',
-        'card_number',
-        'cvv',
-        'authorization',
+        'password', 'passwd', 'pwd', 'passphrase',
+        'secret', 'token', 'api_key', 'apikey', 'authorization',
+        'credential', 'credentials', 'cookie', 'jwt', 'private_key',
+        'otp', 'pin',
+        'card_number', 'cardnumber', 'credit_card', 'pan', 'cvv', 'cvc',
     ],
 
     'mask_replacement' => '********',

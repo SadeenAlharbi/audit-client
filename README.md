@@ -13,7 +13,7 @@ The package contains **no platform logic** and never touches the platform databa
 | | |
 |---|---|
 | PHP | 8.2, 8.3, 8.4 |
-| Laravel | 12, 13 (13 requires PHP ≥ 8.3) |
+| Laravel | 11, 12, 13 (13 requires PHP ≥ 8.3; Laravel 11 is out of security support, upgrade when you can) |
 | API | Audit Log Hub API v1 |
 
 ---
@@ -99,7 +99,7 @@ All keys live in `config/audit-client.php` and can be set through the environmen
 | `listen_auth_events` | `AUDIT_LISTEN_AUTH_EVENTS` | `true` | Log `Login`, `Logout`, `Failed`. |
 | `resolve_actor` | — | `true` | Use the authenticated user when no actor is given. |
 
-Default mask list: `password`, `password_confirmation`, `token`, `access_token`, `refresh_token`, `secret`, `api_key`, `card_number`, `cvv`, `authorization`.
+Default mask list (the platform's "never store" list): `password`, `passwd`, `pwd`, `passphrase`, `secret`, `token`, `api_key`, `apikey`, `authorization`, `credential`, `credentials`, `cookie`, `jwt`, `private_key`, `otp`, `pin`, `card_number`, `cardnumber`, `credit_card`, `pan`, `cvv`, `cvc`. A key matches by its words, whatever the case or separator: `password` also masks `user_password`, `newPassword` and `password2`; `token` masks `remember_token`. Values that are credentials (Bearer headers, JWTs, API keys) are masked whatever the key.
 
 ## Usage
 
@@ -195,7 +195,7 @@ With `listen_auth_events` enabled (default), the package listens to Laravel's au
 |---|---|---|---|---|
 | `Illuminate\Auth\Events\Login` | `auth.login` | `login` | info | `guard`, `remember` |
 | `Illuminate\Auth\Events\Logout` | `auth.logout` | `logout` | info | `guard` |
-| `Illuminate\Auth\Events\Failed` | `auth.failed` | `failed_login` | warning | `guard`, `credentials` (password masked) |
+| `Illuminate\Auth\Events\Failed` | `auth.failed` | `failed_login` | warning | `guard`, `login` (the email / username typed; the credentials are never sent) |
 
 ### Request id middleware
 
@@ -267,7 +267,7 @@ Schedule::command('audit:flush')->everyTenMinutes()->withoutOverlapping();
 ## Security
 
 - **Signing.** When `hmac_secret` is set, every request carries `X-Timestamp` (Unix seconds) and `X-Signature = hex(HMAC-SHA256(secret, canonical))` where `canonical` is `{X-Timestamp}\n{METHOD}\n{path?query exactly as sent}\n{raw body}` — exactly as the API contract specifies. The body that is signed is the body that is sent. The platform rejects timestamps more than 5 minutes off, so keep the server clock in sync (NTP).
-- **Masking.** Values of the `mask` keys are replaced recursively, case-insensitively, in `old_values`, `new_values` and `metadata` before the log is queued. The platform masks again on its side.
+- **Masking.** Values of the `mask` keys are replaced recursively in `old_values`, `new_values` and `metadata` before the log is queued, matching keys by their words like the platform does. The platform masks again on its side.
 - **Credentials** are only read from config at send time and never written to the queue payload or the outbox.
 
 ## Testing your application
@@ -328,4 +328,4 @@ composer lint        # Pint (laravel preset)
 composer analyse     # PHPStan level 6 + Larastan
 ```
 
-CI runs all three on PHP 8.2–8.4 × Laravel 12–13 (`.github/workflows/tests.yml`). Releasing is described in [docs/publishing.md](docs/publishing.md).
+CI runs all three on PHP 8.2–8.4 × Laravel 11–13 (`.github/workflows/tests.yml`). Releasing is described in [docs/publishing.md](docs/publishing.md).

@@ -42,7 +42,7 @@ it('logs logouts', function () {
         && $request->data()['action'] === 'logout');
 });
 
-it('logs failed attempts as warnings and masks the password', function () {
+it('logs failed attempts as warnings with the login identifier, never the credentials', function () {
     Auth::attempt(['email' => 'sara@example.com', 'password' => 'wrong']);
 
     Http::assertSent(function (Request $request) {
@@ -53,7 +53,7 @@ it('logs failed attempts as warnings and masks the password', function () {
             'event' => 'auth.failed',
             'action' => 'failed_login',
             'severity' => 'warning',
-            'metadata' => ['guard' => 'web', 'credentials' => ['email' => 'sara@example.com', 'password' => '********']],
+            'metadata' => ['guard' => 'web', 'login' => 'sara@example.com'],
         ])->and($log['actor']['id'])->toBe((string) $this->user->id);
 
         return true;
@@ -64,5 +64,6 @@ it('logs failed attempts for unknown users without an actor', function () {
     event(new Failed('web', null, ['email' => 'nobody@example.com', 'password' => 'x']));
 
     Http::assertSent(fn (Request $request) => ! isset($request->data()['actor'])
-        && $request->data()['metadata']['credentials']['password'] === '********');
+        && $request->data()['metadata'] === ['guard' => 'web', 'login' => 'nobody@example.com']
+        && ! str_contains(json_encode($request->data()), 'password'));
 });

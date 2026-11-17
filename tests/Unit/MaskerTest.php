@@ -35,9 +35,30 @@ it('masks a whole nested value under a sensitive key and keeps nulls', function 
 });
 
 it('leaves other keys and null input untouched', function () {
-    expect($this->masker->mask(['password_hint' => 'cat', 'tokens_left' => 3]))
-        ->toBe(['password_hint' => 'cat', 'tokens_left' => 3])
+    expect($this->masker->mask(['tokens_left' => 3, 'secretary' => 'Reem', 'shipping' => 'DHL', 'company' => 'QU']))
+        ->toBe(['tokens_left' => 3, 'secretary' => 'Reem', 'shipping' => 'DHL', 'company' => 'QU'])
         ->and($this->masker->mask(null))->toBeNull();
+});
+
+it('matches keys by their words, like the platform', function () {
+    $masker = app(Masker::class);
+
+    $masked = $masker->mask([
+        'user_password' => 'a', 'newPassword' => 'b', 'password2' => 'c', 'DBPassword' => 'd',
+        'remember_token' => 'e', 'accessToken' => 'f', 'APIToken' => 'g', 'billingCardNumber' => 'h',
+        'PINCode' => 'i', 'mysecret' => 'j', 'password_hint' => 'k',
+    ]);
+
+    expect(array_unique(array_values($masked)))->toBe(['********']);
+});
+
+it('masks values that are credentials whatever the key', function () {
+    expect($this->masker->mask([
+        'note' => 'Bearer abcdefghijklmnop',
+        'header' => 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTYifQ.signature',
+        'key' => 'alh_'.str_repeat('A', 40),
+        'city' => 'Buraydah',
+    ]))->toBe(['note' => '********', 'header' => '********', 'key' => '********', 'city' => 'Buraydah']);
 });
 
 it('uses the configured default list and replacement', function () {
